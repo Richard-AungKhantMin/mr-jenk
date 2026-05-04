@@ -5,7 +5,7 @@ spring:
     name: product-service
   data:
     mongodb:
-      uri: mongodb://localhost:27017/buy01
+      uri: mongodb://mongodb:27017/buy01
   kafka:
     bootstrap-servers: localhost:9092
 eureka:
