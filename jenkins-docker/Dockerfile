@@ -22,5 +22,9 @@ RUN mvn --version && \
     node --version && \
     npm --version
 
+# Create Maven cache directory with proper permissions
+RUN mkdir -p /var/jenkins_home/.m2/repository && \
+    chown -R jenkins:jenkins /var/jenkins_home/.m2
+
 # Switch back to jenkins user
 USER jenkins

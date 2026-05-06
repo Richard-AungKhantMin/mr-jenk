@@ -83,3 +83,15 @@ docker-compose -f docker-compose.infra.yml ps
 - Shows all containers from that compose file
 - Displays: name, status (Up/Healthy), ports, errors
 - Use to verify all services started correctly
+
+---
+
+## Linux/File System Basics
+
+### Hidden Files & Directories
+- The `.` (dot) prefix means it's hidden on Linux/Mac systems
+- Example: `.m2`, `.git`, `.gitignore`
+- Hidden files don't show up in regular file listings
+- To see hidden files: `ls -la` (the `-a` flag shows all files including hidden ones)
+- Why use hidden files? Keeps configuration organized and out of the way
+- Application automatically knows to look for them (like Maven looks for `~/.m2/`)
