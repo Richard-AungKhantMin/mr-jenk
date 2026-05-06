@@ -17,6 +17,12 @@ RUN apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Docker Compose
+USER root
+RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
+    chmod +x /usr/local/bin/docker-compose
+USER jenkins
+
 # Verify installations
 RUN mvn --version && \
     node --version && \
