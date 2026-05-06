@@ -24,32 +24,37 @@ pipeline {
         }
         
         stage('Build Java Services') {
-            wrappers {
-                logFileFilter(filter: 'INFO', filterRegex: '.*Downloading.*|.*Downloaded.*|.*Progress.*')
-            }
-            steps {
-                parallel(
-                    "API Gateway": {
+            parallel {
+                stage('API Gateway') {
+                    steps {
                         echo 'Building api-gateway...'
-                        sh 'cd api-gateway && mvn -B clean package -DskipTests'
-                    },
-                    "Discovery Server": {
-                        echo 'Building discovery-server...'
-                        sh 'cd discovery-server && mvn -B clean package -DskipTests'
-                    },
-                    "Identity Service": {
-                        echo 'Building identity-service...'
-                        sh 'cd identity-service && mvn -B clean package -DskipTests'
-                    },
-                    "Product Service": {
-                        echo 'Building product-service...'
-                        sh 'cd product-service && mvn -B clean package -DskipTests'
-                    },
-                    "Media Service": {
-                        echo 'Building media-service...'
-                        sh 'cd media-service && mvn -B clean package -DskipTests'
+                        sh 'cd api-gateway && mvn clean package -DskipTests'
                     }
-                )
+                }
+                stage('Discovery Server') {
+                    steps {
+                        echo 'Building discovery-server...'
+                        sh 'cd discovery-server && mvn clean package -DskipTests'
+                    }
+                }
+                stage('Identity Service') {
+                    steps {
+                        echo 'Building identity-service...'
+                        sh 'cd identity-service && mvn clean package -DskipTests'
+                    }
+                }
+                stage('Product Service') {
+                    steps {
+                        echo 'Building product-service...'
+                        sh 'cd product-service && mvn clean package -DskipTests'
+                    }
+                }
+                stage('Media Service') {
+                    steps {
+                        echo 'Building media-service...'
+                        sh 'cd media-service && mvn clean package -DskipTests'
+                    }
+                }
             }
         }
         
