@@ -22,9 +22,16 @@ RUN mvn --version && \
     node --version && \
     npm --version
 
-# Create Maven cache directory with proper permissions
-RUN mkdir -p /var/jenkins_home/.m2/repository && \
-    chown -R jenkins:jenkins /var/jenkins_home/.m2
+# Create startup script to ensure Maven cache directory exists
+RUN echo '#!/bin/bash\n\
+mkdir -p /var/jenkins_home/.m2/repository\n\
+chown -R jenkins:jenkins /var/jenkins_home/.m2\n\
+exec "$@"' > /usr/local/bin/jenkins-startup.sh && \
+    chmod +x /usr/local/bin/jenkins-startup.sh
 
 # Switch back to jenkins user
 USER jenkins
+
+# Use custom startup script as entrypoint
+ENTRYPOINT ["/usr/local/bin/jenkins-startup.sh", "/usr/bin/tini", "--"]
+CMD ["/usr/local/bin/jenkins.sh"]
