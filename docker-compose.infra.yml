@@ -91,7 +91,9 @@ services:
   # ==================== CI/CD ====================
   
   jenkins:
-    image: jenkins/jenkins:latest
+    build:
+      context: ./jenkins-docker
+      dockerfile: Dockerfile
     container_name: jenkins
     ports:
       - "4000:8080"

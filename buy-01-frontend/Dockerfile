@@ -1,6 +1,6 @@
 # Multi-stage build for Angular Frontend
 # Stage 1: Build with Node
-FROM node:20 as builder
+FROM node:20 AS builder
 
 WORKDIR /app
 
