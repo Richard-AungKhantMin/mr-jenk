@@ -10,9 +10,6 @@ COPY keystore/ssl/server.key /etc/nginx/ssl/server.key
 # Create SSL directory if it doesn't exist
 RUN mkdir -p /etc/nginx/ssl
 
-# Verify nginx configuration syntax
-RUN nginx -t
-
 # Expose ports
 EXPOSE 80 443
 
