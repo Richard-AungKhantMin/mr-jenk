@@ -17,7 +17,7 @@ RUN apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Docker CLI and Docker Compose
+# Install Docker CLI, Docker Compose, and configure docker group
 USER root
 RUN apt-get update && \
     apt-get install -y \
@@ -31,6 +31,9 @@ RUN apt-get update && \
     echo "deb [arch=arm64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian bookworm stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
     apt-get update && \
     apt-get install -y docker-ce-cli docker-compose-plugin && \
+    # Create docker group with GID 999 (common docker socket GID)
+    groupadd -g 999 docker || true && \
+    usermod -aG docker jenkins && \
     rm -rf /var/lib/apt/lists/*
 
 USER jenkins
@@ -40,9 +43,27 @@ RUN mvn --version && \
     node --version && \
     npm --version
 
-# Create startup script to ensure Maven cache directory exists
+# Install sudo for running docker commands without password
+USER root
+RUN rm -rf /var/lib/apt/lists/* && apt-get clean && apt-get update && \
+    apt-get install -y sudo && \
+    echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/jenkins && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create startup script to handle docker socket permissions and Maven cache
 USER root
 RUN echo '#!/bin/bash\n\
+# Handle docker socket permissions dynamically\n\
+if [ -S /var/run/docker.sock ]; then\n\
+  DOCKER_GID=$(ls -ng /var/run/docker.sock | awk '"'"'{print $3}'"'"')\n\
+  if [ ! -z "$DOCKER_GID" ]; then\n\
+    if ! getent group $DOCKER_GID > /dev/null 2>&1; then\n\
+      groupadd -g $DOCKER_GID docker_host 2>/dev/null || true\n\
+    fi\n\
+    usermod -aG $DOCKER_GID jenkins 2>/dev/null || true\n\
+  fi\n\
+fi\n\
+# Setup Maven cache\n\
 mkdir -p /var/jenkins_home/.m2/repository\n\
 chown -R jenkins:jenkins /var/jenkins_home/.m2\n\
 exec "$@"' > /usr/local/bin/jenkins-startup.sh && \

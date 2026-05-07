@@ -82,7 +82,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 echo '========== Building Docker Images =========='
-                sh 'docker compose -f docker-compose.app.yml build'
+                sh 'sudo docker compose -f docker-compose.app.yml build'
             }
         }
         
@@ -90,10 +90,10 @@ pipeline {
             steps {
                 echo '========== Deploying Application =========='
                 sh '''
-                    docker compose -f docker-compose.app.yml down
-                    docker compose -f docker-compose.app.yml up -d --build
+                    sudo docker compose -f docker-compose.app.yml down
+                    sudo docker compose -f docker-compose.app.yml up -d --build
                     sleep 10
-                    docker compose -f docker-compose.app.yml ps
+                    sudo docker compose -f docker-compose.app.yml ps
                 '''
             }
         }
