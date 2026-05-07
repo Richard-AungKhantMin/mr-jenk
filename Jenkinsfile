@@ -84,8 +84,7 @@ pipeline {
                 echo "========== Building Docker Images (Build #${BUILD_VERSION}) =========="
                 sh '''
                     cd ${WORKSPACE}
-                    export PWD=${WORKSPACE}
-                    sudo -E docker compose -f docker-compose.app.yml build
+                    sudo docker compose -f docker-compose.app.yml build
                     # Tag images with build version for version control
                     sudo docker tag mr-jenk-api-gateway:latest mr-jenk-api-gateway:build-${BUILD_VERSION}
                     sudo docker tag mr-jenk-frontend:latest mr-jenk-frontend:build-${BUILD_VERSION}
@@ -102,9 +101,8 @@ pipeline {
                 echo "========== Deploying Application (${PROJECT_NAME} v${BUILD_VERSION}) =========="
                 sh '''
                     cd ${WORKSPACE}
-                    export PWD=${WORKSPACE}
-                    sudo -E docker compose -f docker-compose.app.yml down || true
-                    sudo -E docker compose -f docker-compose.app.yml up -d --build
+                    sudo docker compose -f docker-compose.app.yml down || true
+                    sudo docker compose -f docker-compose.app.yml up -d --build
                     sleep 10
                     sudo docker compose -f docker-compose.app.yml ps
                 '''
