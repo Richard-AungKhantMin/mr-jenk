@@ -90,10 +90,10 @@ pipeline {
             steps {
                 echo '========== Deploying Application =========='
                 sh '''
-                    docker-compose -f docker-compose.app.yml down
-                    docker-compose -f docker-compose.app.yml up -d --build
+                    docker compose -f docker-compose.app.yml down
+                    docker compose -f docker-compose.app.yml up -d --build
                     sleep 10
-                    docker-compose -f docker-compose.app.yml ps
+                    docker compose -f docker-compose.app.yml ps
                 '''
             }
         }
