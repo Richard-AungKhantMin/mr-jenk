@@ -17,7 +17,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                echo '========== Checking out code =========='
+                echo "========== Checking out code (Build #${BUILD_VERSION}) =========="
                 checkout scm
                 sh 'git log --oneline -1'
             }
@@ -81,16 +81,27 @@ pipeline {
         
         stage('Docker Build') {
             steps {
-                echo '========== Building Docker Images =========='
-                sh 'sudo docker compose -f docker-compose.app.yml build'
+                echo "========== Building Docker Images (Build #${BUILD_VERSION}) =========="
+                sh '''
+                    cd ${WORKSPACE}
+                    sudo docker compose -f docker-compose.app.yml build
+                    # Tag images with build version for version control
+                    sudo docker tag mr-jenk-api-gateway:latest mr-jenk-api-gateway:build-${BUILD_VERSION}
+                    sudo docker tag mr-jenk-frontend:latest mr-jenk-frontend:build-${BUILD_VERSION}
+                    sudo docker tag mr-jenk-discovery-server:latest mr-jenk-discovery-server:build-${BUILD_VERSION}
+                    sudo docker tag mr-jenk-identity-service:latest mr-jenk-identity-service:build-${BUILD_VERSION}
+                    sudo docker tag mr-jenk-product-service:latest mr-jenk-product-service:build-${BUILD_VERSION}
+                    sudo docker tag mr-jenk-media-service:latest mr-jenk-media-service:build-${BUILD_VERSION}
+                '''
             }
         }
         
         stage('Deploy') {
             steps {
-                echo '========== Deploying Application =========='
+                echo "========== Deploying Application (${PROJECT_NAME} v${BUILD_VERSION}) =========="
                 sh '''
-                    sudo docker compose -f docker-compose.app.yml down
+                    cd ${WORKSPACE}
+                    sudo docker compose -f docker-compose.app.yml down || true
                     sudo docker compose -f docker-compose.app.yml up -d --build
                     sleep 10
                     sudo docker compose -f docker-compose.app.yml ps
