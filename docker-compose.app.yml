@@ -139,8 +139,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./keystore/ssl:/etc/nginx/ssl:ro
+      - ${PWD}/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${PWD}/keystore/ssl:/etc/nginx/ssl:ro
     depends_on:
       - api-gateway
     networks:
