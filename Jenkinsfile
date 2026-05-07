@@ -82,7 +82,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 echo '========== Building Docker Images =========='
-                sh 'docker-compose build'
+                sh 'docker compose build'
             }
         }
         
