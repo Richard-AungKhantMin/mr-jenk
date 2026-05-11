@@ -1,0 +1,3 @@
+com/example/identity/service/UserServiceTest.class
+com/example/identity/controller/AuthControllerTest.class
+com/example/identity/service/JwtServiceTest.class
