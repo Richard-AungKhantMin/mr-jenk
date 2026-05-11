@@ -130,7 +130,7 @@ pipeline {
         success {
             echo '✓ Build and Deploy Successful!'
             slackSend(
-                tokenCredentialId: 'slack-bot-token-for-jenkins',
+                tokenCredentialId: 'slack-token',
                 color: 'good',
                 message: """
 :white_check_mark: *Build SUCCESS*
@@ -145,7 +145,7 @@ URL: ${env.BUILD_URL}
         failure {
             echo '✗ Build Failed! Check logs above.'
             slackSend(
-                tokenCredentialId: 'slack-bot-token-for-jenkins',
+                tokenCredentialId: 'slack-token',
                 color: 'danger',
                 message: """
 :x: *Build FAILED*
