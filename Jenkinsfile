@@ -128,11 +128,34 @@ pipeline {
         }
         
         success {
-            echo 'Build and Deploy Successful!'
+            echo '✓ Build and Deploy Successful!'
+            slackSend(
+                credentialId: 'slack-bot-token-for-jenkins',
+                color: 'good',
+                message: """
+:white_check_mark: *Build SUCCESS*
+Job: ${env.JOB_NAME}
+Build #: ${env.BUILD_NUMBER}
+Status: SUCCESS
+URL: ${env.BUILD_URL}
+                """
+            )
         }
         
         failure {
-            echo 'Build Failed! Check logs above.'
+            echo '✗ Build Failed! Check logs above.'
+            slackSend(
+                credentialId: 'slack-bot-token-for-jenkins',
+                color: 'danger',
+                message: """
+:x: *Build FAILED*
+Job: ${env.JOB_NAME}
+Build #: ${env.BUILD_NUMBER}
+Status: FAILURE
+URL: ${env.BUILD_URL}
+Check logs for details!
+                """
+            )
         }
     }
 }
