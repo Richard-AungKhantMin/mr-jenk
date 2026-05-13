@@ -118,9 +118,7 @@ pipeline {
                 echo "========== Deploying Application (${PROJECT_NAME} v${BUILD_VERSION}) =========="
                 sh '''
                     cd ${WORKSPACE}
-                    # Ensure uploads directory exists for media-service volume
-                    mkdir -p uploads
-                    sudo docker compose -f docker-compose.app.yml down || true
+                    sudo docker compose -f docker-compose.app.yml down -v
                     sudo docker compose -f docker-compose.app.yml up -d --build
                     sleep 10
                     sudo docker compose -f docker-compose.app.yml ps
