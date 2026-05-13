@@ -18,8 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import org.mockito.quality.Strictness;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(value = MockitoExtension.class)
 @DisplayName("MediaController Tests")
 class MediaControllerTest {
 
@@ -34,9 +35,10 @@ class MediaControllerTest {
 
     @BeforeEach
     void setUp() {
-        when(mockFile.getOriginalFilename()).thenReturn("test-image.jpg");
-        when(mockFile.getContentType()).thenReturn("image/jpeg");
-        when(mockFile.getSize()).thenReturn(1024L);
+        // Use lenient() for stubbings not used in all tests
+        lenient().when(mockFile.getOriginalFilename()).thenReturn("test-image.jpg");
+        lenient().when(mockFile.getContentType()).thenReturn("image/jpeg");
+        lenient().when(mockFile.getSize()).thenReturn(1024L);
     }
 
     @Test

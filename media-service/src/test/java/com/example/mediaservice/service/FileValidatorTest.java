@@ -28,7 +28,7 @@ class FileValidatorTest {
 
     @Test
     void validate_rejectsTooLargeFile() {
-        byte[] largeContent = new byte[3 * 1024 * 1024]; // 3MB
+        byte[] largeContent = new byte[51 * 1024 * 1024]; // 51MB (exceeds 50MB limit)
         MockMultipartFile file = new MockMultipartFile(
                 "file",
                 "large.jpg",

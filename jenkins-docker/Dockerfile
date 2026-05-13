@@ -6,7 +6,8 @@ USER root
 # Update packages to patch vulnerabilities
 RUN apt-get update && apt-get upgrade -y
 
-# Install build tools: Maven, Node.js, Git, curl, and Chromium for tests
+# Install build tools: Maven, Node.js, Git, curl
+# Note: Use Puppeteer's bundled Chromium instead of system Chromium for ARM64 compatibility
 RUN apt-get install -y \
     maven \
     nodejs \
@@ -15,7 +16,6 @@ RUN apt-get install -y \
     curl \
     wget \
     unzip \
-    chromium \
     libnss3 \
     libatk-bridge2.0-0 \
     libx11-xcb1 \
