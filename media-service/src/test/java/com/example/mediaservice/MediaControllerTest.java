@@ -83,6 +83,8 @@ class MediaControllerTest {
         com.example.mediaservice.model.Media media = new com.example.mediaservice.model.Media();
         media.setId("media-123");
         media.setFilename("test-image.jpg");
+        media.setProductId("prod-123");
+        media.setSize(1024L);
 
         // Mock SecurityContext to provide userId
         Authentication auth = mock(Authentication.class);
