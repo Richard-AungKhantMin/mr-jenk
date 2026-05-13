@@ -130,9 +130,9 @@ pipeline {
             steps {
                 echo '========== Checking Service Health =========='
                 sh '''
-                    sleep 10
-                    curl -k https://localhost:8080/actuator/health || true
-                    curl http://localhost:8761/actuator/health || true
+                    sleep 30
+                    curl -k https://localhost:8080/actuator/health
+                    curl http://localhost:8761/actuator/health
                 '''
             }
         }
