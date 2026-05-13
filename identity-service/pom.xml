@@ -90,9 +90,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <jvm>/Users/aung.min/.jdk/jdk-17.0.16/jdk-17.0.16+8/Contents/Home/bin/java</jvm>
-                </configuration>
             </plugin>
         </plugins>
     </build>
