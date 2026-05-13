@@ -15,7 +15,7 @@ RUN apt-get install -y \
     curl \
     wget \
     unzip \
-    chromium-browser \
+    chromium \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Docker CLI, Docker Compose, and configure docker group
