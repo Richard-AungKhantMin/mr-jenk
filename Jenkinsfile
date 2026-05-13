@@ -135,6 +135,12 @@ pipeline {
                     curl http://localhost:8761/actuator/health
                 '''
             }
+            post {
+                failure {
+                    echo "========== ROLLBACK INITIATED =========="
+                    sh "cd ${WORKSPACE} && sudo docker compose -f docker-compose.app.yml down || true"
+                }
+            }
         }
     }
     
