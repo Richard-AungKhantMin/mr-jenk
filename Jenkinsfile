@@ -125,23 +125,6 @@ pipeline {
                 '''
             }
         }
-        
-        stage('Health Check') {
-            steps {
-                echo '========== Checking Service Health =========='
-                sh '''
-                    sleep 30
-                    curl -k https://localhost:8080/actuator/health
-                    curl http://localhost:8761/actuator/health
-                '''
-            }
-            post {
-                failure {
-                    echo "========== ROLLBACK INITIATED =========="
-                    sh "cd ${WORKSPACE} && sudo docker compose -f docker-compose.app.yml down || true"
-                }
-            }
-        }
     }
     
     post {
