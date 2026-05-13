@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/")
-public class AuthController 
+public class AuthController {
     private final UserService userService;
     private final JwtService jwtService;
 
