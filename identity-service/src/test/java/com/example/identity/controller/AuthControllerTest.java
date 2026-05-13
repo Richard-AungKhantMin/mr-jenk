@@ -2,18 +2,20 @@ package com.example.identity.controller;
 
 import com.example.identity.model.Role;
 import com.example.identity.model.User;
+import com.example.identity.repository.UserRepository;
 import com.example.identity.service.JwtService;
 import com.example.identity.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Map;
 import java.util.Optional;
@@ -22,20 +24,23 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 @DisplayName("AuthController Tests")
 class AuthControllerTest {
 
-    @Mock
+    @MockBean
+    private UserRepository userRepository;
+
+    @MockBean
     private UserService userService;
 
-    @Mock
+    @MockBean
     private JwtService jwtService;
 
     @Mock
     private Authentication authentication;
 
-    @InjectMocks
+    @Autowired
     private AuthController authController;
 
     private User testUser;
@@ -205,9 +210,9 @@ class AuthControllerTest {
 
     @Test
     @DisplayName("Should get user profile for authenticated user")
+    @WithMockUser(username = "john@example.com")
     void testGetProfileSuccess() {
         // Arrange
-        when(authentication.getName()).thenReturn("john@example.com");
         when(userService.findByEmail("john@example.com")).thenReturn(Optional.of(testUser));
 
         // Act
@@ -226,9 +231,9 @@ class AuthControllerTest {
 
     @Test
     @DisplayName("Should return 404 when user profile not found")
+    @WithMockUser(username = "nonexistent@example.com")
     void testGetProfileNotFound() {
         // Arrange
-        when(authentication.getName()).thenReturn("nonexistent@example.com");
         when(userService.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());
 
         // Act

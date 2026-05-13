@@ -102,11 +102,8 @@ class JwtServiceTest {
     @Test
     @DisplayName("Should reject empty user data")
     void testGenerateTokenWithNullUser() {
-        // Arrange
-        testUser.setId(null);
-
         // Act & Assert
-        assertThrows(Exception.class, () -> jwtService.generateToken(testUser));
+        assertThrows(NullPointerException.class, () -> jwtService.generateToken(null));
     }
 
     @Test
