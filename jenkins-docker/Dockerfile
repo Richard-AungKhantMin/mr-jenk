@@ -16,6 +16,24 @@ RUN apt-get install -y \
     wget \
     unzip \
     chromium \
+    libnss3 \
+    libatk-bridge2.0-0 \
+    libx11-xcb1 \
+    libdrm2 \
+    libice6 \
+    libsm6 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxi6 \
+    libxrandr2 \
+    libxrender1 \
+    libxtst6 \
+    libcups2 \
+    libxkbcommon0 \
+    libpangocairo-1.0-0 \
+    libasound2 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Docker CLI, Docker Compose, and configure docker group

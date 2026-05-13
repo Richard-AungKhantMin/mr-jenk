@@ -87,7 +87,8 @@ pipeline {
                     steps {
                         echo '========== Running Frontend Unit Tests =========='
                         sh '''
-                            export CHROME_BIN=/usr/bin/chromium
+                            export CHROME_BIN=$(which chromium || which chromium-browser || which google-chrome)
+                            echo "Using CHROME_BIN at: $CHROME_BIN"
                             cd buy-01-frontend
                             npm test -- --watch=false --browsers=ChromeHeadless
                         '''
