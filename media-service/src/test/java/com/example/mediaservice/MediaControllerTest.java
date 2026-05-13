@@ -12,6 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 
@@ -51,15 +54,26 @@ class MediaControllerTest {
         media.setProductId("prod-123");
         media.setSize(1024L);
 
+        // Mock SecurityContext to provide userId
+        Authentication auth = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(auth.isAuthenticated()).thenReturn(true);
+        when(auth.getName()).thenReturn("user-123");
+        when(securityContext.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(securityContext);
+
         when(mediaService.uploadImage(mockFile, "user-123", "prod-123"))
             .thenReturn(media);
 
         // Act
-        ResponseEntity<?> response = mediaController.uploadImage(mockFile, "prod-123", "user-123");
+        ResponseEntity<?> response = mediaController.uploadImage(mockFile, "prod-123", null);
 
         // Assert
         assertNotNull(response);
         verify(mediaService, times(1)).uploadImage(mockFile, "user-123", "prod-123");
+
+        // Clean up
+        SecurityContextHolder.clearContext();
     }
 
     @Test
@@ -68,17 +82,28 @@ class MediaControllerTest {
         // Arrange
         com.example.mediaservice.model.Media media = new com.example.mediaservice.model.Media();
         media.setId("media-123");
+        media.setFilename("test-image.jpg");
 
-        when(mediaService.uploadImage(any(MultipartFile.class), anyString(), anyString()))
+        // Mock SecurityContext to provide userId
+        Authentication auth = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(auth.isAuthenticated()).thenReturn(true);
+        when(auth.getName()).thenReturn("user-123");
+        when(securityContext.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(mediaService.uploadImage(any(MultipartFile.class), eq("user-123"), eq("prod-123")))
             .thenReturn(media);
 
-        // Act & Assert - Verify no exception is thrown
-        assertDoesNotThrow(() -> {
-            try {
-                mediaService.uploadImage(mockFile, "user-123", "prod-123");
-            } catch (java.io.IOException e) {
-                fail("Unexpected IOException: " + e.getMessage());
-            }
-        });
+        // Act
+        ResponseEntity<?> response = mediaController.uploadImage(mockFile, "prod-123", null);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(201, response.getStatusCode().value());
+        verify(mediaService, times(1)).uploadImage(any(), eq("user-123"), eq("prod-123"));
+
+        // Clean up
+        SecurityContextHolder.clearContext();
     }
 }
