@@ -31,8 +31,7 @@ public class AuthController {
             String email = req.get("email");
             String password = req.get("password");
             Role role = Role.valueOf(req.get("role"));
-            String avatar = req.get("avatar"); // Optional, can be null
-            User user = userService.register(name, email, password, role, avatar);
+            User user = userService.register(name, email, password, role);
             return ResponseEntity.ok(Map.of(
                 "id", user.getId(), 
                 "name", user.getName(),
@@ -80,8 +79,7 @@ public class AuthController {
                 "id", user.getId(),
                 "name", user.getName(),
                 "email", user.getEmail(),
-                "role", user.getRole().name(),
-                "avatar", user.getAvatar() != null ? user.getAvatar() : ""
+                "role", user.getRole().name()
             )))
             .orElse(ResponseEntity.notFound().build());
     }
@@ -101,8 +99,7 @@ public class AuthController {
                     "id", user.getId(),
                     "name", user.getName(),
                     "email", user.getEmail(),
-                    "role", user.getRole().name(),
-                    "avatar", user.getAvatar() != null ? user.getAvatar() : ""
+                    "role", user.getRole()
                 )))
                 .orElse(ResponseEntity.notFound().build());
         } catch (RuntimeException e) {

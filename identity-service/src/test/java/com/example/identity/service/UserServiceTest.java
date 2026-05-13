@@ -60,7 +60,7 @@ class UserServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(testUser);
 
         // Act
-        User result = userService.register("John Doe", "john@example.com", "password123", Role.CLIENT, "avatar.jpg");
+        User result = userService.register("John Doe", "john@example.com", "password123", Role.CLIENT);
 
         // Assert
         assertNotNull(result);
@@ -68,7 +68,6 @@ class UserServiceTest {
         assertEquals("John Doe", result.getName());
         assertEquals("john@example.com", result.getEmail());
         assertEquals(Role.CLIENT, result.getRole());
-        assertEquals("avatar.jpg", result.getAvatar());
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository, times(1)).save(userCaptor.capture());
@@ -86,7 +85,7 @@ class UserServiceTest {
 
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () ->
-            userService.register("John Doe", "john@example.com", "password123", Role.CLIENT, "avatar.jpg")
+            userService.register("John Doe", "john@example.com", "password123", Role.CLIENT)
         );
 
         assertEquals("Email already exists", exception.getMessage());
@@ -171,16 +170,14 @@ class UserServiceTest {
         User updatedUser = new User();
         updatedUser.setId("user-123");
         updatedUser.setName("Jane Doe");
-        updatedUser.setAvatar("new-avatar.jpg");
         when(userRepository.save(any(User.class))).thenReturn(updatedUser);
 
         // Act
-        Optional<User> result = userService.updateProfile("john@example.com", "Jane Doe", "new-avatar.jpg");
+        Optional<User> result = userService.updateProfile("john@example.com", "Jane Doe");
 
         // Assert
         assertTrue(result.isPresent());
         assertEquals("Jane Doe", result.get().getName());
-        assertEquals("new-avatar.jpg", result.get().getAvatar());
 
         verify(userRepository, times(1)).save(any(User.class));
     }

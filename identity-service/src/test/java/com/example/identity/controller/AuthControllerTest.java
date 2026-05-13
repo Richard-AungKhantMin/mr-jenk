@@ -54,7 +54,6 @@ class AuthControllerTest {
         testUser.setName("John Doe");
         testUser.setEmail("john@example.com");
         testUser.setRole(Role.CLIENT);
-        testUser.setAvatar("avatar.jpg");
 
         loginRequest = Map.of(
             "email", "john@example.com",
@@ -65,8 +64,7 @@ class AuthControllerTest {
             "name", "John Doe",
             "email", "john@example.com",
             "password", "password123",
-            "role", "CLIENT",
-            "avatar", "avatar.jpg"
+            "role", "CLIENT"
         );
     }
 
@@ -78,8 +76,7 @@ class AuthControllerTest {
             eq("John Doe"),
             eq("john@example.com"),
             eq("password123"),
-            eq(Role.CLIENT),
-            eq("avatar.jpg")
+            eq(Role.CLIENT)
         )).thenReturn(testUser);
 
         // Act
@@ -97,7 +94,7 @@ class AuthControllerTest {
         assertEquals("Registration successful. Please login.", body.get("message"));
         
         verify(userService, times(1)).register(
-            "John Doe", "john@example.com", "password123", Role.CLIENT, "avatar.jpg"
+            "John Doe", "john@example.com", "password123", Role.CLIENT
         );
     }
 
@@ -112,7 +109,7 @@ class AuthControllerTest {
             "role", "INVALID_ROLE"
         );
 
-        when(userService.register(anyString(), anyString(), anyString(), any(), any()))
+        when(userService.register(anyString(), anyString(), anyString(), any()))
             .thenThrow(new IllegalArgumentException("Invalid role"));
 
         // Act
@@ -130,7 +127,7 @@ class AuthControllerTest {
     @DisplayName("Should fail registration if email already exists")
     void testRegisterEmailAlreadyExists() {
         // Arrange
-        when(userService.register(anyString(), anyString(), anyString(), any(), any()))
+        when(userService.register(anyString(), anyString(), anyString(), any()))
             .thenThrow(new RuntimeException("Email already exists"));
 
         // Act
@@ -213,6 +210,7 @@ class AuthControllerTest {
     @WithMockUser(username = "john@example.com")
     void testGetProfileSuccess() {
         // Arrange
+        when(authentication.getName()).thenReturn("john@example.com");
         when(userService.findByEmail("john@example.com")).thenReturn(Optional.of(testUser));
 
         // Act
@@ -225,6 +223,8 @@ class AuthControllerTest {
         assertNotNull(body);
         assertEquals("user-123", body.get("id"));
         assertEquals("John Doe", body.get("name"));
+        assertEquals("john@example.com", body.get("email"));
+        assertEquals("CLIENT", body.get("role"));
 
         verify(userService, times(1)).findByEmail("john@example.com");
     }
