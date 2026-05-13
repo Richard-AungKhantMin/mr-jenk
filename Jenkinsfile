@@ -102,13 +102,6 @@ pipeline {
                 sh '''
                     cd ${WORKSPACE}
                     sudo docker compose -f docker-compose.app.yml build
-                    # Tag images with build version for version control
-                    sudo docker tag mr-jenk-api-gateway:latest mr-jenk-api-gateway:build-${BUILD_VERSION}
-                    sudo docker tag mr-jenk-frontend:latest mr-jenk-frontend:build-${BUILD_VERSION}
-                    sudo docker tag mr-jenk-discovery-server:latest mr-jenk-discovery-server:build-${BUILD_VERSION}
-                    sudo docker tag mr-jenk-identity-service:latest mr-jenk-identity-service:build-${BUILD_VERSION}
-                    sudo docker tag mr-jenk-product-service:latest mr-jenk-product-service:build-${BUILD_VERSION}
-                    sudo docker tag mr-jenk-media-service:latest mr-jenk-media-service:build-${BUILD_VERSION}
                 '''
             }
         }
