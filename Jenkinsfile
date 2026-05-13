@@ -87,12 +87,8 @@ pipeline {
                     steps {
                         echo '========== Running Frontend Unit Tests =========='
                         sh '''
+                            export CHROME_BIN=/usr/bin/chromium
                             cd buy-01-frontend
-                            # Install puppeteer which includes ARM64-compatible Chromium
-                            npm install --save-dev puppeteer
-                            # Use puppeteer's bundled Chromium for ARM64 compatibility
-                            export CHROME_BIN=$(node -e "console.log(require('puppeteer').executablePath())")
-                            echo "Using CHROME_BIN at: $CHROME_BIN"
                             npm test -- --watch=false --browsers=ChromeHeadless
                         '''
                     }

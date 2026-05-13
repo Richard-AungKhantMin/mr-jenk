@@ -6,8 +6,8 @@ USER root
 # Update packages to patch vulnerabilities
 RUN apt-get update && apt-get upgrade -y
 
-# Install build tools: Maven, Node.js, Git, curl
-# Note: Use Puppeteer's bundled Chromium instead of system Chromium for ARM64 compatibility
+# Install build tools: Maven, Node.js, Git, curl, Chromium
+# Note: Use system Chromium for ARM64 compatibility
 RUN apt-get install -y \
     maven \
     nodejs \
@@ -16,6 +16,7 @@ RUN apt-get install -y \
     curl \
     wget \
     unzip \
+    chromium \
     libnss3 \
     libatk-bridge2.0-0 \
     libx11-xcb1 \
@@ -50,8 +51,8 @@ RUN apt-get update && \
     echo "deb [arch=arm64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian bookworm stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
     apt-get update && \
     apt-get install -y docker-ce-cli docker-compose-plugin && \
-    # Create docker group with GID 999 (common docker socket GID)
-    groupadd -g 999 docker || true && \
+    # Create docker group (try GID 999 first, then fallback to any GID)
+    (groupadd -g 999 docker || groupadd docker || true) && \
     usermod -aG docker jenkins && \
     rm -rf /var/lib/apt/lists/*
 
