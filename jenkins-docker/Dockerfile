@@ -6,7 +6,7 @@ USER root
 # Update packages to patch vulnerabilities
 RUN apt-get update && apt-get upgrade -y
 
-# Install build tools: Maven, Node.js, Git, curl
+# Install build tools: Maven, Node.js, Git, curl, and Chromium for tests
 RUN apt-get install -y \
     maven \
     nodejs \
@@ -15,6 +15,7 @@ RUN apt-get install -y \
     curl \
     wget \
     unzip \
+    chromium-browser \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Docker CLI, Docker Compose, and configure docker group

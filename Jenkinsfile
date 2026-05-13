@@ -87,6 +87,7 @@ pipeline {
                     steps {
                         echo '========== Running Frontend Unit Tests =========='
                         sh '''
+                            export CHROME_BIN=/usr/bin/chromium-browser
                             cd buy-01-frontend
                             npm test -- --watch=false --browsers=ChromeHeadless
                         '''
