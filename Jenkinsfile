@@ -70,12 +70,28 @@ pipeline {
         }
         
         stage('Unit Tests') {
-            steps {
-                echo '========== Running Unit Tests =========='
-                sh '''
-                    cd api-gateway && mvn test || true
-                    cd ../discovery-server && mvn test || true
-                '''
+            parallel {
+                stage('Backend Tests') {
+                    steps {
+                        echo '========== Running Backend Unit Tests =========='
+                        sh '''
+                            cd api-gateway && mvn test
+                            cd ../discovery-server && mvn test
+                            cd ../identity-service && mvn test
+                            cd ../product-service && mvn test
+                            cd ../media-service && mvn test
+                        '''
+                    }
+                }
+                stage('Frontend Tests') {
+                    steps {
+                        echo '========== Running Frontend Unit Tests =========='
+                        sh '''
+                            cd buy-01-frontend
+                            npm test -- --watch=false --browsers=ChromeHeadless
+                        '''
+                    }
+                }
             }
         }
         
