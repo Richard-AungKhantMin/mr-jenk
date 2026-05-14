@@ -6,6 +6,7 @@ pipeline {
     environment {
         PROJECT_NAME = 'mr-jenk'
         BUILD_VERSION = "${BUILD_NUMBER}"
+        // JWT_SECRET is injected at deploy time via withCredentials — never hardcoded here
     }
     
     options {
@@ -109,13 +110,17 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo "========== Deploying Application (${PROJECT_NAME} v${BUILD_VERSION}) =========="
-                sh '''
-                    cd ${WORKSPACE}
-                    sudo docker compose -f docker-compose.app.yml down -v
-                    sudo docker compose -f docker-compose.app.yml up -d --build
-                    sleep 10
-                    sudo docker compose -f docker-compose.app.yml ps
-                '''
+                withCredentials([
+                    string(credentialsId: 'jwt-secret', variable: 'JWT_SECRET')
+                ]) {
+                    sh '''
+                        cd ${WORKSPACE}
+                        sudo docker compose -f docker-compose.app.yml down -v
+                        sudo JWT_SECRET=$JWT_SECRET docker compose -f docker-compose.app.yml up -d --build
+                        sleep 10
+                        sudo docker compose -f docker-compose.app.yml ps
+                    '''
+                }
             }
         }
     }
