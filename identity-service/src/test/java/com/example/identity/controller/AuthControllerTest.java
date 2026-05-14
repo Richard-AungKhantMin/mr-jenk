@@ -48,7 +48,7 @@ class AuthControllerTest {
     private Map<String, String> registerRequest;
 
     @BeforeEach
-    void setUp() 
+    void setUp() {
         testUser = new User();
         testUser.setId("user-123");
         testUser.setName("John Doe");
