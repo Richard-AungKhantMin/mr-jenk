@@ -52,7 +52,7 @@ class AuthControllerTest {
         testUser = new User();
         testUser.setId("user-123");
         testUser.setName("John Doe");
-        testUser.setEmail("john@example.com");
+        testUser.setEmail("john@exampe.com");
         testUser.setRole(Role.CLIENT);
 
         loginRequest = Map.of(
