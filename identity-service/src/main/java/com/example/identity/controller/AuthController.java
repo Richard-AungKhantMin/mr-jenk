@@ -34,8 +34,7 @@ public class AuthController {
             User user = userService.register(name, email, password, role);
             return ResponseEntity.ok(Map.of(
                 "id", user.getId(), 
-                "name", user.getN
-                ame(),
+                "name", user.getName(),
                 "email", user.getEmail(), 
                 "role", user.getRole().name(),
                 "message", "Registration successful. Please login."
