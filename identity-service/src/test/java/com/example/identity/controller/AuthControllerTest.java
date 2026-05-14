@@ -48,11 +48,11 @@ class AuthControllerTest {
     private Map<String, String> registerRequest;
 
     @BeforeEach
-    void setUp() {
+    void setUp() 
         testUser = new User();
         testUser.setId("user-123");
         testUser.setName("John Doe");
-        testUser.setEmail("john@exampe.com");
+        testUser.setEmail("john@example.com");
         testUser.setRole(Role.CLIENT);
 
         loginRequest = Map.of(
