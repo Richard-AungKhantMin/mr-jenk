@@ -102,6 +102,16 @@ pipeline {
                 echo "========== Building Docker Images (Build #${BUILD_VERSION}) =========="
                 sh '''
                     cd ${WORKSPACE}
+                    echo "========== Creating Backups of Current Images =========="
+                    # Tag existing images as 'backup' before we build new ones
+                    sudo docker tag mr-jenk-api-gateway:latest mr-jenk-api-gateway:backup
+                    sudo docker tag mr-jenk-identity-service:latest mr-jenk-identity-service:backup
+                    sudo docker tag mr-jenk-product-service:latest mr-jenk-product-service:backup
+                    sudo docker tag mr-jenk-media-service:latest mr-jenk-media-service:backup
+                    sudo docker tag mr-jenk-discovery-server:latest mr-jenk-discovery-server:backup
+                    sudo docker tag mr-jenk-frontend:latest mr-jenk-frontend:backup
+                    sudo docker tag mr-jenk-nginx-reverse-proxy:latest mr-jenk-nginx-reverse-proxy:backup
+
                     sudo docker compose -f docker-compose.app.yml build
                 '''
             }
@@ -147,7 +157,22 @@ URL: ${env.BUILD_URL}
         }
         
         failure {
-            echo '✗ Build Failed! Check logs above.'
+            echo '✗ Build or Deploy Failed! Attempting Rollback to Backup...'
+            sh '''
+                cd ${WORKSPACE}
+                # Revert tags from backup back to latest
+                sudo docker tag mr-jenk-api-gateway:backup mr-jenk-api-gateway:latest
+                sudo docker tag mr-jenk-identity-service:backup mr-jenk-identity-service:latest
+                sudo docker tag mr-jenk-product-service:backup mr-jenk-product-service:latest
+                sudo docker tag mr-jenk-media-service:backup mr-jenk-media-service:latest
+                sudo docker tag mr-jenk-discovery-server:backup mr-jenk-discovery-server:latest
+                sudo docker tag mr-jenk-frontend:backup mr-jenk-frontend:latest
+                sudo docker tag mr-jenk-nginx-reverse-proxy:backup mr-jenk-nginx-reverse-proxy:latest
+
+                # Restart using the reverted images (no --build flag)
+                sudo docker compose -f docker-compose.app.yml up -d
+            '''
+            echo '✗ Sending Failure Notifications...'
             slackSend(
                 tokenCredentialId: 'slack-token',
                 color: 'danger',
