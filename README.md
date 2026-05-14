@@ -13,8 +13,6 @@ This project demonstrates a full-stack microservices architecture integrated wit
 
 ## 🛠 CI/CD Pipeline Features (Jenkins)
 
-The pipeline is designed to meet strict audit requirements for reliability and security:
-
 1.  **Automated Build**: Triggers automatically on every `git push`.
 2.  **Parallel Testing**: 
     - **Backend**: Runs JUnit tests for all microservices.
@@ -25,7 +23,7 @@ The pipeline is designed to meet strict audit requirements for reliability and s
     - No hardcoded secrets in the source code.
 4.  **Deployment**: 
     - Automated deployment using Docker Compose.
-    - Includes rollback strategies and health checks.
+    - Includes rollback strategies.
 5.  **Notifications**: Real-time **Slack notifications** for build success or failure.
 
 ## 🏗 Microservices Architecture
@@ -42,15 +40,10 @@ The pipeline is designed to meet strict audit requirements for reliability and s
 1.  **Configure Secrets**: 
     - Copy `.env.example` to `.env`.
     - Fill in your `JWT_SECRET`.
+
+    Or you can get from Jenkins Credentials Store by using the credential ID `jwt-secret`.
 2.  **Run with Docker**:
     ```bash
     docker compose -f docker-compose.infra.yml up -d  # Start DBs, Kafka, etc.
     docker compose -f docker-compose.app.yml up -d --build # Start App services
     ```
-
-## 📋 Audit & Standards
-
-This project adheres to the following standards:
-- **Functional**: Pipeline success, automatic triggers, and automated test enforcement.
-- **Security**: Permission management and secret encryption.
-- **Quality**: Well-organized code and comprehensive test reporting.
