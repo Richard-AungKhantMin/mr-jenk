@@ -68,6 +68,8 @@ class AuthControllerTest {
         );
     }
 
+    //test
+
     @Test
     @DisplayName("Should register a new user successfully")
     void testRegisterSuccess() {
