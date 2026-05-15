@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @DisplayName("AuthController Tests")
-class AuthControllerTest {
+class AuthControllerTest 
 
     @MockBean
     private UserRepository userRepository;
@@ -75,7 +75,7 @@ class AuthControllerTest {
     void testRegisterSuccess() {
         // Arrange
         when(userService.register(
-            eq("John Do"),
+            eq("John Doe"),
             eq("john@example.com"),
             eq("password123"),
             eq(Role.CLIENT)
