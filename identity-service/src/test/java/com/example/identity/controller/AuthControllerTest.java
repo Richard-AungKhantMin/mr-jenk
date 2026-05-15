@@ -75,7 +75,7 @@ class AuthControllerTest {
     void testRegisterSuccess() {
         // Arrange
         when(userService.register(
-            eq("John Doe"),
+            eq("John Do"),
             eq("john@example.com"),
             eq("password123"),
             eq(Role.CLIENT)
