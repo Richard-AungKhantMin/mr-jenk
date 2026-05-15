@@ -1,6 +1,6 @@
 # Comprehensive Unit Test Suite Documentation
 
-This document provides a detailed implementation guide for the complete unit test suite for the mr-jenk project, including both Spring Boot backend microservices and Angular frontend.
+This document provides a detailed implementation guide for the complete unit test suite for the buy-02 project, including both Spring Boot backend microservices and Angular frontend.
 
 ## Overview
 
@@ -192,7 +192,7 @@ The unit test suite provides complete coverage for:
 
 ### A. Angular Services Tests
 
-#### 1. AuthService Tests (`buy-01-frontend/src/app/services/auth.service.spec.ts`)
+#### 1. AuthService Tests (`buy-02-frontend/src/app/services/auth.service.spec.ts`)
 **Purpose**: Test authentication service API calls and session management
 
 **Key Test Cases**:
@@ -214,7 +214,7 @@ The unit test suite provides complete coverage for:
 
 ---
 
-#### 2. ProductService Tests (`buy-01-frontend/src/app/services/product.service.spec.ts`)
+#### 2. ProductService Tests (`buy-02-frontend/src/app/services/product.service.spec.ts`)
 **Purpose**: Test product API service
 
 **Key Test Cases**:
@@ -240,7 +240,7 @@ The unit test suite provides complete coverage for:
 
 ### B. Angular Components Tests
 
-#### 1. LoginComponent Tests (`buy-01-frontend/src/app/components/login/login.spec.ts`)
+#### 1. LoginComponent Tests (`buy-02-frontend/src/app/components/login/login.spec.ts`)
 **Purpose**: Test login form and authentication flow
 
 **Key Test Cases**:
@@ -344,7 +344,7 @@ stage('Unit Tests') {
         },
         'Frontend': {
             steps {
-                dir('buy-01-frontend') {
+                dir('buy-02-frontend') {
                     sh 'npm run test -- --watch=false --browsers=ChromeHeadless'
                 }
             }
@@ -363,7 +363,7 @@ stage('Code Coverage Report') {
         
         // Frontend coverage
         publishHTML([
-            reportDir: 'buy-01-frontend/coverage',
+            reportDir: 'buy-02-frontend/coverage',
             reportFiles: 'index.html',
             reportName: 'Frontend Coverage Report'
         ])

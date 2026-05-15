@@ -7,7 +7,7 @@ services:
 
   discovery-server:
     container_name: discovery-server
-    image: mr-jenk-discovery-server:latest
+    image: buy-02-discovery-server:latest
     build:
       context: ./discovery-server
       dockerfile: Dockerfile
@@ -29,7 +29,7 @@ services:
 
   identity-service:
     container_name: identity-service
-    image: mr-jenk-identity-service:latest
+    image: buy-02-identity-service:latest
     build:
       context: ./identity-service
       dockerfile: Dockerfile
@@ -56,7 +56,7 @@ services:
 
   product-service:
     container_name: product-service
-    image: mr-jenk-product-service:latest
+    image: buy-02-product-service:latest
     build:
       context: ./product-service
       dockerfile: Dockerfile
@@ -83,7 +83,7 @@ services:
 
   media-service:
     container_name: media-service
-    image: mr-jenk-media-service:latest
+    image: buy-02-media-service:latest
     build:
       context: ./media-service
       dockerfile: Dockerfile
@@ -112,7 +112,7 @@ services:
 
   api-gateway:
     container_name: api-gateway
-    image: mr-jenk-api-gateway:latest
+    image: buy-02-api-gateway:latest
     build:
       context: ./api-gateway
       dockerfile: Dockerfile
@@ -139,7 +139,7 @@ services:
 
   nginx:
     container_name: nginx-reverse-proxy
-    image: mr-jenk-nginx:latest
+    image: buy-02-nginx:latest
     build:
       context: .
       dockerfile: nginx-docker/Dockerfile
@@ -156,9 +156,9 @@ services:
 
   frontend:
     container_name: frontend
-    image: mr-jenk-frontend:latest
+    image: buy-02-frontend:latest
     build:
-      context: ./buy-01-frontend
+      context: ./buy-02-frontend
       dockerfile: Dockerfile
     depends_on:
       - api-gateway

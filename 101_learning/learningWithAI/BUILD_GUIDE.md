@@ -1,4 +1,4 @@
-# Complete Build Guide: MR-Jenk E-Commerce Microservices Platform
+# Complete Build Guide: buy-02 E-Commerce Microservices Platform
 
 ## Table of Contents
 1. [Prerequisites & Installation](#prerequisites--installation)
@@ -213,7 +213,7 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                        Frontend (Angular)                   │
-│                    buy-01-frontend (Port 3000)             │
+│                    buy-02-frontend (Port 3000)             │
 └──────────────────────────────┬──────────────────────────────┘
                                │
                    ┌───────────▼──────────────┐
@@ -269,10 +269,10 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 cd ~/Desktop
 
 # Clone the repository
-git clone https://github.com/your-username/mr-jenk.git
+git clone https://github.com/your-username/buy-02.git
 
 # Navigate into project
-cd mr-jenk
+cd buy-02
 
 # List to verify contents
 ls -la
@@ -308,7 +308,7 @@ The application uses HTTPS for secure communication (even locally). You need to 
 
 ```bash
 # Navigate to project root
-cd ~/Desktop/mr-jenk
+cd ~/Desktop/buy-02
 
 # Make script executable (macOS/Linux only)
 chmod +x generate-ssl-cert.sh
@@ -366,7 +366,7 @@ docker ps
 #### Step 2: Build All Services
 
 ```bash
-cd ~/Desktop/mr-jenk
+cd ~/Desktop/buy-02
 
 # Make docker script executable (macOS/Linux)
 chmod +x docker.sh
@@ -415,7 +415,7 @@ This approach builds Java services directly on your machine.
 Each service needs to be built with Maven:
 
 ```bash
-cd ~/Desktop/mr-jenk
+cd ~/Desktop/buy-02
 
 # Build Discovery Server
 cd discovery-server
@@ -447,7 +447,7 @@ mvn clean package -DskipTests
 #### Step 2: Build Frontend
 
 ```bash
-cd ~/Desktop/mr-jenk/buy-01-frontend
+cd ~/Desktop/buy-02/buy-02-frontend
 
 # Install dependencies
 npm install
@@ -462,7 +462,7 @@ npm run build
 
 ```bash
 # First, navigate back to project root
-cd ~/Desktop/mr-jenk
+cd ~/Desktop/buy-02
 
 # Start only infrastructure services using docker-compose
 docker-compose up -d zookeeper kafka kafka-init mongodb
@@ -477,42 +477,42 @@ Open separate terminal windows for each service:
 
 **Terminal 1 - Discovery Server**:
 ```bash
-cd ~/Desktop/mr-jenk/discovery-server
+cd ~/Desktop/buy-02/discovery-server
 java -jar target/discovery-server-0.0.1-SNAPSHOT.jar
 # Runs on http://localhost:8761
 ```
 
 **Terminal 2 - Identity Service**:
 ```bash
-cd ~/Desktop/mr-jenk/identity-service
+cd ~/Desktop/buy-02/identity-service
 java -jar target/identity-service-0.0.1-SNAPSHOT.jar
 # Runs on http://localhost:8081
 ```
 
 **Terminal 3 - Product Service**:
 ```bash
-cd ~/Desktop/mr-jenk/product-service
+cd ~/Desktop/buy-02/product-service
 java -jar target/product-service-0.0.1-SNAPSHOT.jar
 # Runs on http://localhost:8082
 ```
 
 **Terminal 4 - Media Service**:
 ```bash
-cd ~/Desktop/mr-jenk/media-service
+cd ~/Desktop/buy-02/media-service
 java -jar target/media-service-0.0.1-SNAPSHOT.jar
 # Runs on http://localhost:8083
 ```
 
 **Terminal 5 - API Gateway**:
 ```bash
-cd ~/Desktop/mr-jenk/api-gateway
+cd ~/Desktop/buy-02/api-gateway
 java -jar target/api-gateway-0.0.1-SNAPSHOT.jar
 # Runs on https://localhost:8080
 ```
 
 **Terminal 6 - Frontend (Angular)**:
 ```bash
-cd ~/Desktop/mr-jenk/buy-01-frontend
+cd ~/Desktop/buy-02/buy-02-frontend
 npm start
 # Runs on http://localhost:4200
 ```
@@ -525,7 +525,7 @@ npm start
 
 ```bash
 # In project root directory
-cd ~/Desktop/mr-jenk
+cd ~/Desktop/buy-02
 
 # Start all services
 docker-compose up -d
@@ -595,11 +595,11 @@ After startup, access these URLs:
 
 ```bash
 # Test individual service
-cd ~/Desktop/mr-jenk/api-gateway
+cd ~/Desktop/buy-02/api-gateway
 mvn test
 
 # Test all services
-cd ~/Desktop/mr-jenk
+cd ~/Desktop/buy-02
 
 for service in api-gateway discovery-server identity-service product-service media-service; do
     echo "Testing $service..."
@@ -612,7 +612,7 @@ done
 #### Frontend Tests (Angular)
 
 ```bash
-cd ~/Desktop/mr-jenk/buy-01-frontend
+cd ~/Desktop/buy-02/buy-02-frontend
 
 # Run tests in headless mode
 npm test -- --watch=false
@@ -624,7 +624,7 @@ npm test
 ### Integration Tests
 
 ```bash
-cd ~/Desktop/mr-jenk
+cd ~/Desktop/buy-02
 
 # Run all tests including integration tests
 mvn test -Dtest=*IT
@@ -749,7 +749,7 @@ brew services start jenkins-lts
 #### Method 1: Using Pipeline Script
 
 1. Click **New Item**
-2. Enter name: `mr-jenk-pipeline`
+2. Enter name: `buy-02-pipeline`
 3. Select **Pipeline**
 4. Click **OK**
 5. Scroll down to **Pipeline** section
@@ -782,7 +782,7 @@ pipeline {
                     sh 'cd ../media-service && mvn clean package -DskipTests'
                     
                     sh 'echo "Building Frontend..."'
-                    sh 'cd ../buy-01-frontend && npm install && npm run build'
+                    sh 'cd ../buy-02-frontend && npm install && npm run build'
                 }
             }
         }
@@ -793,7 +793,7 @@ pipeline {
                     sh 'echo "Running tests..."'
                     sh 'cd api-gateway && mvn test || true'
                     sh 'cd ../discovery-server && mvn test || true'
-                    sh 'cd buy-01-frontend && npm test -- --watch=false || true'
+                    sh 'cd buy-02-frontend && npm test -- --watch=false || true'
                 }
             }
         }
@@ -850,7 +850,7 @@ pipeline {
     
     environment {
         DOCKER_REGISTRY = 'docker.io'
-        PROJECT_NAME = 'mr-jenk'
+        PROJECT_NAME = 'buy-02'
         BUILD_VERSION = "${BUILD_NUMBER}"
         GITHUB_REPO = credentials('github-credentials')
     }
@@ -909,7 +909,7 @@ pipeline {
             steps {
                 echo 'Building Angular frontend...'
                 sh '''
-                    cd buy-01-frontend
+                    cd buy-02-frontend
                     npm install
                     npm run build
                 '''
@@ -921,7 +921,7 @@ pipeline {
                 echo '========== Running Unit Tests =========='
                 sh '''
                     cd api-gateway && mvn test || true
-                    cd ../buy-01-frontend && npm test -- --watch=false || true
+                    cd ../buy-02-frontend && npm test -- --watch=false || true
                 '''
             }
         }
@@ -977,7 +977,7 @@ pipeline {
         always {
             echo '========== Collecting Artifacts =========='
             archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'buy-01-frontend/dist/**/*', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'buy-02-frontend/dist/**/*', allowEmptyArchive: true
         }
         
         success {
@@ -1051,7 +1051,7 @@ Add this to your `README.md`:
 ```markdown
 ## Build Status
 
-[![Build Status](http://your-jenkins-server:8080/buildStatus/icon?job=mr-jenk-pipeline)](http://your-jenkins-server:8080/job/mr-jenk-pipeline/)
+[![Build Status](http://your-jenkins-server:8080/buildStatus/icon?job=buy-02-pipeline)](http://your-jenkins-server:8080/job/buy-02-pipeline/)
 ```
 
 ---

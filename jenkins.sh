@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Jenkins startup script for Buy-01 CI/CD Pipeline
+# Jenkins startup script for buy-02 CI/CD Pipeline
 # - Ensures Jenkins data directory exists
 # - Removes old Jenkins container if exists
 # - Starts Jenkins container
@@ -135,7 +135,7 @@ show_access_info() {
 
 # Main function
 main() {
-    print_header "Buy-01 Jenkins CI/CD Startup Script"
+    print_header "buy-02 Jenkins CI/CD Startup Script"
     
     check_docker
     setup_jenkins_directory

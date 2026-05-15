@@ -24,7 +24,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built Angular app from builder
-COPY --from=builder /app/dist/buy-01-frontend/browser /usr/share/nginx/html
+COPY --from=builder /app/dist/buy-02-frontend/browser /usr/share/nginx/html
 
 # Set working directory
 WORKDIR /usr/share/nginx/html

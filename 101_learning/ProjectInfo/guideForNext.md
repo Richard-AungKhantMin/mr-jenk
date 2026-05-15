@@ -1,4 +1,4 @@
-# MR-Jenk Project - Completion Guide
+# buy-02 Project - Completion Guide
 
 ## Project Status: 90% Complete ✅
 
@@ -90,7 +90,7 @@ stage('Unit Tests') {
             steps {
                 echo '========== Testing Angular Frontend =========='
                 sh '''
-                    cd buy-01-frontend
+                    cd buy-02-frontend
                     npm install
                     npm run test -- --watch=false --code-coverage 2>/dev/null || true
                 '''
@@ -334,12 +334,12 @@ stage('Health Check') {
    - Add webhook
 
 2. **Jenkins Side**:
-   - Jenkins → mr-jenk job → Configure
+   - Jenkins → buy-02 job → Configure
    - Build Triggers → Check "GitHub hook trigger for GIT-SCM polling"
    - Save
 
 #### Option B: SCM Polling (No Webhook Needed)
-1. Jenkins → mr-jenk job → Configure
+1. Jenkins → buy-02 job → Configure
 2. Build Triggers → Check "Poll SCM"
 3. Schedule: `H/5 * * * *` (polls every 5 minutes)
 4. Save

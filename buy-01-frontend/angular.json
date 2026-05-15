@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "buy-01-frontend": {
+    "buy-02-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -69,10 +69,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "buy-01-frontend:build:production"
+              "buildTarget": "buy-02-frontend:build:production"
             },
             "development": {
-              "buildTarget": "buy-01-frontend:build:development"
+              "buildTarget": "buy-02-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"

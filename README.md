@@ -1,6 +1,6 @@
-# MR-Jenk: E-commerce Microservices CI/CD
+# buy-02: E-commerce Microservices CI/CD
 
-MR-Jenk is a microservices-based e-commerce platform featuring a robust **Jenkins CI/CD pipeline** for automated building, testing, and deployment.
+buy-02 is a microservices-based e-commerce platform featuring a robust **Jenkins CI/CD pipeline** for automated building, testing, and deployment.
 
 ## 🚀 Project Overview
 
@@ -33,7 +33,7 @@ This project demonstrates a full-stack microservices architecture integrated wit
 - **identity-service**: User management and JWT-based authentication.
 - **product-service**: Core product management.
 - **media-service**: Image and file upload handling.
-- **buy-01-frontend**: The customer-facing web interface.
+- **buy-02-frontend**: The customer-facing web interface.
 
 ## 🚦 Getting Started (Local)
 

@@ -4,7 +4,7 @@ pipeline {
     agent any
     
     environment {
-        PROJECT_NAME = 'mr-jenk'
+        PROJECT_NAME = 'buy-02'
         BUILD_VERSION = "${BUILD_NUMBER}"
         // JWT_SECRET is injected at deploy time via withCredentials — never hardcoded here
     }
@@ -63,7 +63,7 @@ pipeline {
             steps {
                 echo 'Building Angular frontend...'
                 sh '''
-                    cd buy-01-frontend
+                    cd buy-02-frontend
                     npm install
                     npm run build
                 '''
@@ -89,7 +89,7 @@ pipeline {
                         echo '========== Running Frontend Unit Tests =========='
                         sh '''
                             export CHROME_BIN=/usr/bin/chromium
-                            cd buy-01-frontend
+                            cd buy-02-frontend
                             npm test -- --watch=false --browsers=ChromeHeadless
                         '''
                     }
@@ -104,13 +104,13 @@ pipeline {
                     cd ${WORKSPACE}
                     echo "========== Creating Backups of Current Images =========="
                     # Tag existing images as 'backup' before we build new ones
-                    sudo docker tag mr-jenk-api-gateway:latest mr-jenk-api-gateway:backup || true
-                    sudo docker tag mr-jenk-identity-service:latest mr-jenk-identity-service:backup || true
-                    sudo docker tag mr-jenk-product-service:latest mr-jenk-product-service:backup || true
-                    sudo docker tag mr-jenk-media-service:latest mr-jenk-media-service:backup || true
-                    sudo docker tag mr-jenk-discovery-server:latest mr-jenk-discovery-server:backup || true
-                    sudo docker tag mr-jenk-frontend:latest mr-jenk-frontend:backup || true
-                    sudo docker tag mr-jenk-nginx:latest mr-jenk-nginx:backup || true
+                    sudo docker tag buy-02-api-gateway:latest buy-02-api-gateway:backup || true
+                    sudo docker tag buy-02-identity-service:latest buy-02-identity-service:backup || true
+                    sudo docker tag buy-02-product-service:latest buy-02-product-service:backup || true
+                    sudo docker tag buy-02-media-service:latest buy-02-media-service:backup || true
+                    sudo docker tag buy-02-discovery-server:latest buy-02-discovery-server:backup || true
+                    sudo docker tag buy-02-frontend:latest buy-02-frontend:backup || true
+                    sudo docker tag buy-02-nginx:latest buy-02-nginx:backup || true
 
                     sudo docker compose -f docker-compose.app.yml build
                 '''
@@ -161,13 +161,13 @@ URL: ${env.BUILD_URL}
             sh '''
                 cd ${WORKSPACE}
                 # Revert tags from backup back to latest
-                sudo docker tag mr-jenk-api-gateway:backup mr-jenk-api-gateway:latest || true
-                sudo docker tag mr-jenk-identity-service:backup mr-jenk-identity-service:latest || true
-                sudo docker tag mr-jenk-product-service:backup mr-jenk-product-service:latest || true
-                sudo docker tag mr-jenk-media-service:backup mr-jenk-media-service:latest || true
-                sudo docker tag mr-jenk-discovery-server:backup mr-jenk-discovery-server:latest || true
-                sudo docker tag mr-jenk-frontend:backup mr-jenk-frontend:latest || true
-                sudo docker tag mr-jenk-nginx:backup mr-jenk-nginx:latest || true
+                sudo docker tag buy-02-api-gateway:backup buy-02-api-gateway:latest || true
+                sudo docker tag buy-02-identity-service:backup buy-02-identity-service:latest || true
+                sudo docker tag buy-02-product-service:backup buy-02-product-service:latest || true
+                sudo docker tag buy-02-media-service:backup buy-02-media-service:latest || true
+                sudo docker tag buy-02-discovery-server:backup buy-02-discovery-server:latest || true
+                sudo docker tag buy-02-frontend:backup buy-02-frontend:latest || true
+                sudo docker tag buy-02-nginx:backup buy-02-nginx:latest || true
 
                 # Restart using the reverted images (no --build flag)
                 sudo docker compose -f docker-compose.app.yml up -d

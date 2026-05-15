@@ -20,9 +20,9 @@ This guide provides step-by-step instructions to integrate the comprehensive uni
 ### Angular Frontend Tests
 
 ```
-✅ buy-01-frontend/src/app/services/auth.service.spec.ts
-✅ buy-01-frontend/src/app/services/product.service.spec.ts
-✅ buy-01-frontend/src/app/components/login/login.spec.ts (Updated)
+✅ buy-02-frontend/src/app/services/auth.service.spec.ts
+✅ buy-02-frontend/src/app/services/product.service.spec.ts
+✅ buy-02-frontend/src/app/components/login/login.spec.ts (Updated)
 ```
 
 ---
@@ -219,7 +219,7 @@ pipeline {
                 stage('Frontend Tests') {
                     steps {
                         echo "🧪 Testing Angular Frontend..."
-                        dir('buy-01-frontend') {
+                        dir('buy-02-frontend') {
                             sh '''
                                 npm ci && \
                                 npm run test:ci
@@ -228,7 +228,7 @@ pipeline {
                     }
                     post {
                         always {
-                            dir('buy-01-frontend') {
+                            dir('buy-02-frontend') {
                                 junit 'coverage/test-results.xml'
                                 publishHTML([
                                     reportDir: 'coverage',
@@ -261,7 +261,7 @@ pipeline {
                         '''
                     },
                     'Frontend Coverage': {
-                        dir('buy-01-frontend') {
+                        dir('buy-02-frontend') {
                             sh 'npm run test:ci'
                         }
                     }
@@ -284,7 +284,7 @@ pipeline {
             
             // Archive coverage reports
             archiveArtifacts(
-                artifacts: '**/target/site/jacoco/**, buy-01-frontend/coverage/**',
+                artifacts: '**/target/site/jacoco/**, buy-02-frontend/coverage/**',
                 allowEmptyArchive: true
             )
 
@@ -340,7 +340,7 @@ npm ci
 npm run test:ci
 
 # View coverage
-open buy-01-frontend/coverage/index.html
+open buy-02-frontend/coverage/index.html
 ```
 
 ---

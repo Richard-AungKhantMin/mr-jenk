@@ -10,5 +10,5 @@ import { ToastContainerComponent } from './components/toast-container/toast-cont
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('buy-01-frontend');
+  protected readonly title = signal('buy-02-frontend');
 }

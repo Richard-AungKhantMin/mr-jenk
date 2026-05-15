@@ -52,13 +52,13 @@ agent any
 
 ```groovy
 environment {
-    PROJECT_NAME = 'mr-jenk'
+    PROJECT_NAME = 'buy-02'
     BUILD_VERSION = "${BUILD_NUMBER}"
 }
 ```
 
 **`environment`** = Global variables used throughout pipeline
-- **`PROJECT_NAME = 'mr-jenk'`** = Static variable (same every build)
+- **`PROJECT_NAME = 'buy-02'`** = Static variable (same every build)
   - Can be used later as `$PROJECT_NAME` or `${PROJECT_NAME}`
 - **`BUILD_VERSION = "${BUILD_NUMBER}"`** = Dynamic variable
   - **`${BUILD_NUMBER}`** = Jenkins automatically provides this (1, 2, 3...)
@@ -186,7 +186,7 @@ stage('API Gateway') {
 ```
 
 **`cd api-gateway`** = Change directory to api-gateway folder
-https://github.com/Richard-AungKhantMin/mr-jenk
+https://github.com/Richard-AungKhantMin/buy-02
 **`mvn clean package -DskipTests`**
 - **`mvn`** = Maven command
 - **`clean`** = Delete old builds (`target/` folder)
@@ -203,7 +203,7 @@ stage('Build Frontend') {
     steps {
         echo 'Building Angular frontend...'
         sh '''
-            cd buy-01-frontend
+            cd buy-02-frontend
             npm install
             npm run build
         '''
@@ -510,8 +510,8 @@ stage('Build') {
 |----------|-------|---------|
 | `${BUILD_NUMBER}` | Build ID | `1`, `2`, `3` |
 | `${BUILD_ID}` | Build timestamp | `2025-05-01_15-30` |
-| `${JOB_NAME}` | Pipeline name | `mr-jenk-pipeline` |
-| `${WORKSPACE}` | Project folder | `/var/jenkins_home/workspace/mr-jenk` |
+| `${JOB_NAME}` | Pipeline name | `buy-02-pipeline` |
+| `${WORKSPACE}` | Project folder | `/var/jenkins_home/workspace/buy-02` |
 | `${GIT_BRANCH}` | Git branch | `main`, `develop` |
 | `${GIT_COMMIT}` | Git commit hash | `a1b2c3d...` |
 
