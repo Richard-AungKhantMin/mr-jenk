@@ -12,6 +12,8 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 /**
  * Enhanced security configuration for API Gateway with comprehensive security headers
  */
+
+//hi
 @Configuration
 public class SecurityConfig {
 
