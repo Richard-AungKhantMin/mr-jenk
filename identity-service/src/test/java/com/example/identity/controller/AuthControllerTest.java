@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @DisplayName("AuthController Tests")
-class AuthControllerTest 
+class AuthControllerTest {
 
     @MockBean
     private UserRepository userRepository;
