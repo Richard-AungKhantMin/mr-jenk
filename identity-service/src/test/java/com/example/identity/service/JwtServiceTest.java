@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("JwtService Tests")
-class JwtServiceTest 
+class JwtServiceTest {
 
     private JwtService jwtService;
     private final String jwtSecret = "this-is-a-very-long-secret-key-for-jwt-signing-at-least-256-bits";
