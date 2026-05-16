@@ -97,6 +97,43 @@ pipeline {
             }
         }
         
+        stage('SonarQube Code Analysis') {
+            steps {
+                echo '========== Running SonarQube Code Quality Analysis =========='
+                withSonarQubeEnv('SonarQube-Local') {
+                    sh '''
+                        echo "Scanning Java microservices..."
+                        sonar-scanner \
+                          -Dsonar.projectKey=buy-02 \
+                          -Dsonar.projectName="buy-02 Microservices" \
+                          -Dsonar.projectVersion=${BUILD_VERSION} \
+                          -Dsonar.sources=api-gateway/src/main,discovery-server/src/main,identity-service/src/main,media-service/src/main,product-service/src/main,buy-02-frontend/src \
+                          -Dsonar.tests=api-gateway/src/test,discovery-server/src/test,identity-service/src/test,media-service/src/test,product-service/src/test \
+                          -Dsonar.java.binaries=api-gateway/target/classes,discovery-server/target/classes,identity-service/target/classes,media-service/target/classes,product-service/target/classes \
+                          -Dsonar.exclusions="**/test/**,**/*Test.java,**/node_modules/**,**/target/**,**/dist/**" \
+                          -Dsonar.qualitygate.wait=true
+                    '''
+                }
+            }
+        }
+        
+        stage('Quality Gate Check') {
+            steps {
+                echo '========== Checking SonarQube Quality Gate =========='
+                script {
+                    try {
+                        timeout(time: 5, unit: 'MINUTES') {
+                            waitForQualityGate abortPipeline: true
+                        }
+                        echo '✓ Quality Gate PASSED'
+                    } catch (err) {
+                        echo '✗ Quality Gate FAILED'
+                        error "Quality gate failed. Fix the issues in SonarQube and try again."
+                    }
+                }
+            }
+        }
+        
         stage('Docker Build') {
             steps {
                 echo "========== Building Docker Images (Build #${BUILD_VERSION}) =========="

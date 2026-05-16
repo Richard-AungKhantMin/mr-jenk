@@ -1,0 +1,46 @@
+# Code Owners for buy-02 Microservices Project
+# This file ensures the right people review changes to critical code
+
+# Default owners for all files
+* @owner
+
+# API Gateway service
+api-gateway/ @owner @backend-team
+api-gateway/src/main/java/com/example/gateway/filter/ @security-team
+api-gateway/Dockerfile @devops-team
+
+# Discovery Server
+discovery-server/ @owner @backend-team
+discovery-server/Dockerfile @devops-team
+
+# Identity Service - Security critical
+identity-service/ @owner @security-team @backend-team
+identity-service/src/main/java/com/example/identity/security/ @security-team
+identity-service/Dockerfile @devops-team
+
+# Product Service
+product-service/ @owner @backend-team
+product-service/Dockerfile @devops-team
+
+# Media Service
+media-service/ @owner @backend-team
+media-service/src/main/java/com/example/media/storage/ @devops-team
+media-service/Dockerfile @devops-team
+
+# Frontend application
+buy-02-frontend/ @owner @frontend-team
+buy-02-frontend/src/app/guards/ @security-team
+buy-02-frontend/src/app/interceptors/ @security-team
+buy-02-frontend/Dockerfile @devops-team
+
+# Configuration and infrastructure
+docker-compose*.yml @devops-team @owner
+Dockerfile* @devops-team
+nginx.conf @devops-team
+Jenkinsfile @devops-team
+.github/workflows/ @devops-team
+sonar-project.properties @owner
+
+# Documentation and learning materials
+101_notes/ @owner
+README.md @owner
