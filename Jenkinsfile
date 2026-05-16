@@ -108,7 +108,7 @@ pipeline {
                           -Dsonar.projectName="buy-02 Microservices" \
                           -Dsonar.projectVersion=${BUILD_VERSION} \
                           -Dsonar.sources=api-gateway/src/main,discovery-server/src/main,identity-service/src/main,media-service/src/main,product-service/src/main,buy-02-frontend/src \
-                          -Dsonar.tests=api-gateway/src/test,discovery-server/src/test,identity-service/src/test,media-service/src/test,product-service/src/test \
+                                                    -Dsonar.tests=api-gateway/src/test,identity-service/src/test,media-service/src/test,product-service/src/test \
                           -Dsonar.java.binaries=api-gateway/target/classes,discovery-server/target/classes,identity-service/target/classes,media-service/target/classes,product-service/target/classes \
                           -Dsonar.exclusions="**/test/**,**/*Test.java,**/node_modules/**,**/target/**,**/dist/**" \
                           -Dsonar.qualitygate.wait=true
